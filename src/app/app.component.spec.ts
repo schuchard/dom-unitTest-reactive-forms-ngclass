@@ -1,16 +1,13 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterTestingModule, ReactiveFormsModule],
+      declarations: [AppComponent],
     }).compileComponents();
   }));
 
@@ -20,16 +17,40 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'del-dom-test'`, () => {
+  it(`should have as title 'dom-unitTest-reactive-forms-ngclass-test'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('del-dom-test');
+    expect(app.title).toEqual('dom-unitTest-reactive-forms-ngclass-test');
   });
 
   it('should render title in a h1 tag', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to del-dom-test!');
+    expect(compiled.querySelector('h1').textContent).toContain(
+      'Welcome to dom-unitTest-reactive-forms-ngclass-test!'
+    );
+  });
+
+  it('should change class from red to green when password reaches 3 characters', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const compiled = fixture.debugElement.nativeElement;
+    const el = compiled.querySelector('input[formControlName="password"]');
+    const form = fixture.debugElement.componentInstance.loginForm;
+
+    fixture.detectChanges();
+    expect(el.className).toContain('red');
+
+    form.patchValue({ password: 'a' });
+    fixture.detectChanges();
+    expect(el.className).toContain('red');
+
+    form.patchValue({ password: 'ab' });
+    fixture.detectChanges();
+    expect(el.className).toContain('red');
+
+    form.patchValue({ password: 'abc' });
+    fixture.detectChanges();
+    expect(el.className).toContain('green');
   });
 });
